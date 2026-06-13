@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="3">
+<title>Cyber Monitoring Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <i class="fa-solid fa-shield-halved logo-icon"></i>
+        <div class="nav-titles">
+            <h1>Cyber Monitoring Dashboard</h1>
+            <p>Real-Time Endpoint Monitoring System</p>
+        </div>
+    </div>
+    <div class="nav-right">
+        <span class="status-pill"><i class="fa-solid fa-circle"></i> System Online</span>
+    </div>
+</nav>
+
+<main class="container">
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon icon-accent"><i class="fa-solid fa-server"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Total Devices</span>
+                <span class="stat-value">{{ devices|length }}</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Online Devices</span>
+                <span class="stat-value">{{ online_count }}</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon icon-red"><i class="fa-solid fa-circle-xmark"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Offline Devices</span>
+                <span class="stat-value">{{ offline_count }}</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon icon-orange"><i class="fa-solid fa-microchip"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Average CPU</span>
+                <span class="stat-value">{{ avg_cpu }}%</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="table-section">
+        <div class="table-header">
+            <h2><i class="fa-solid fa-desktop"></i> Endpoint Status</h2>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="device-table">
+                <thead>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>Operating System</th>
+                        <th>CPU Usage</th>
+                        <th>RAM Usage</th>
+                        <th>Disk Usage</th>
+                        <th>Last Seen</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td class="hostname-cell"><i class="fa-solid fa-laptop"></i> {{ device.hostname }}</td>
+                        <td>{{ device.os }}</td>
+                        <td>{{ device.cpu }}</td>
+                        <td>{{ device.memory }}</td>
+                        <td>{{ device.disk }}</td>
+                        <td>{{ device.last_seen }}</td>
+                        <td>
+                            {% if device.status == "Online" %}
+                            <span class="badge badge-online"><i class="fa-solid fa-circle"></i> Online</span>
+                            {% else %}
+                            <span class="badge badge-offline"><i class="fa-solid fa-circle"></i> Offline</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 Cyber Monitoring Dashboard | SOC Operations Center</p>
+</footer>
+
+</body>
+</html>
